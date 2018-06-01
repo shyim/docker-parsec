@@ -1,6 +1,17 @@
 #!/bin/bash
 set -e
 
+IMAGE=jfyne/parsec
+
+if [[ $# -eq 1 ]]; then
+    if [[ $1 == "update" ]]; then
+        docker pull ${IMAGE}
+    elif [[ $1 == "build" ]]; then
+        IMAGE=parsec
+        docker build -t ${IMAGE} .
+    fi
+fi
+
 if [[ -n "$(docker ps -qaf 'name=parsec')" ]]; then
     docker restart parsec
 else
@@ -10,11 +21,11 @@ else
     docker run --rm --name parsec \
         -e USER_UID=${USER_UID} \
         -e USER_GID=${USER_GID} \
-        -e DISPLAY=unix:0.0 \
-        -v /tmp/.X11-unix:/tmp/.X11-unix \
+        -e DISPLAY=unix${DISPLAY} \
+        -v /tmp/.X11-unix:/tmp/.X11-unix:ro \
         -v /run/user/${USER_UID}/pulse:/run/pulse:ro \
         --mount source=parsec_home,target=/home/parsec \
-        --device=/dev/dri
-        jfyne/parsec
+        --device=/dev/dri \
+        ${IMAGE}
 fi
 

@@ -6,13 +6,10 @@ RUN apt-get update && \
     dpkg -i parsec-linux.deb || true && \
     yes | apt-get -f install && \
     apt-get clean && \
-    echo enable-shm=no >> /etc/pulse/client.conf
+    echo enable-shm=no >> /etc/pulse/client.conf && \
+    useradd -ms /bin/bash parsec
 
-# PulseAudio server.
 ENV PULSE_SERVER /run/pulse/native
-
-# Parsec user
-RUN useradd -ms /bin/bash parsec
 USER parsec
 WORKDIR /home/parsec
 
