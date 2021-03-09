@@ -1,6 +1,8 @@
 # Parsec gaming client
 
-Requires pulseaudio on the host, based on Ubuntu 16.04
+Requires pulseaudio on the host, based on Ubuntu 20.04
+
+Enable xorg sharing with xhost first
 
 ## Usage
 
