@@ -1,4 +1,4 @@
-FROM ubuntu:16.04
+FROM ubuntu:20.04
 
 ADD https://s3.amazonaws.com/parsec-build/package/parsec-linux.deb parsec-linux.deb
 RUN apt-get update && \
@@ -10,7 +10,8 @@ RUN apt-get update && \
     useradd -ms /bin/bash parsec
 
 ENV PULSE_SERVER /run/pulse/native
-USER parsec
 WORKDIR /home/parsec
 
+RUN apt-get install -y xdg-utils
+USER parsec
 CMD ["/usr/bin/parsecd"]
